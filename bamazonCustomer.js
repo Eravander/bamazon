@@ -49,34 +49,33 @@ function userPrompt() {
     FROM products
     WHERE item_id=${response.itemID}`, function (err, res) {
         if (err) throw err;
-        console.log(res[0].stock_quantity)
+
         if (res[0].stock_quantity > 0) {
           //   * This means updating the SQL database to reflect the remaining quantity. -----Make this a purchase() function?
-          // purchase();
+          purchase(res[0]);
           
           //* Once the update goes through, show the customer the total cost of their purchase.
         } else {
           console.log(`Sorry we are out of ${res[0].product_name}. Please try another item.`)
           userPrompt();
         }
-        endConnection();
       })
   })
 };
 
-// function purchase(){
-//   connection.query(
-//     `UPDATE products SET ? WHERE ?`,
-//     [
-//       {
-//         // stock_quantity: -=1
-//       },
-//       {
-
-//       }
-//     ]
-//   )
-// }
+function purchase(res){
+  console.log(`Thank you for your purchase of ${res.product_name}. Your Total is $${res.price}`)
+  connection.query(`UPDATE products SET ? WHERE ?`,
+  [
+    {
+      stock_quantity: res.stock_quantity - 1
+    },
+    {
+      item_id: res.item_id
+    }
+  ]);
+  endConnection();
+}
 
 function endConnection() {
   connection.end();
