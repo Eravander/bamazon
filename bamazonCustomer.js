@@ -54,11 +54,11 @@ function userPrompt() {
     FROM products
     WHERE item_id=${custResponse.itemID}`, function (err, res) {
         if (err) throw err;
-          //here we check if there is stock remaining
-        if (res[0].stock_quantity > 0) {
+         //here we check if there is stock remaining
+        if ((custResponse.quantity - res[0].stock_quantity) <= 0) {
           //If stock remains customer data is pushed forward to form the purchase and update the database
           purchase(res[0], custResponse);
-          
+
           //else the customer is informed that their selection is out of stock and prompted again
         } else {
           console.log(`Sorry we are out of ${res[0].product_name}. Please try another item.`)
@@ -69,22 +69,22 @@ function userPrompt() {
 };
 
 //Here we update the stock quantity and conform the order
-function purchase(res, custResponse){
+function purchase(res, custResponse) {
   // console.log(custResponse)
   console.log(`Thank you for your purchase of ${res.product_name}. Your Total is $${res.price * custResponse.quantity}`)
   connection.query(`UPDATE products SET ? WHERE ?`,
-  [
-    {
-      stock_quantity: res.stock_quantity - custResponse.quantity
-    },
-    {
-      item_id: res.item_id
-    }
-  ]);
+    [
+      {
+        stock_quantity: res.stock_quantity - custResponse.quantity
+      },
+      {
+        item_id: res.item_id
+      }
+    ]);
   endConnection();
 }
 
 //closes connection
 function endConnection() {
   connection.end();
-}
+};
