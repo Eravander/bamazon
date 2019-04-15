@@ -178,10 +178,10 @@ function newProduct() {
 VALUES("${answer.name}", "${answer.dept}", ${answer.price}, ${answer.quantity})`, function (err, res) {
           if (err) throw err;
           console.log(`New Product Added! ${answer.quantity} units of ${answer.name} at $${answer.price} each!`)
-        })
+          //returns user to start screen
+          logIn();
+        });
     });
-    //returns user to start screen
-  logIn();
 }
 //ends connection to DB
 function endConnection() {
