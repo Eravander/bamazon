@@ -42,11 +42,23 @@ function userPrompt() {
       type: "input",
       name: "itemID",
       message: "Please enter the item ID of the product you would like to purchase.",
+      validate: function (value) {
+        if (isNaN(value) === false) {
+            return true;
+        }
+        return false;
+    }
     },
     {
       type: "input",
       name: "quantity",
-      message: "How many would you like to buy?"
+      message: "How many would you like to buy?",
+      validate: function (value) {
+        if (isNaN(value) === false) {
+            return true;
+        }
+        return false;
+    }
     }
   ]).then(function (custResponse) {
     //Database is queried 
