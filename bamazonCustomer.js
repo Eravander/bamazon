@@ -1,7 +1,7 @@
-var inquirer = require("inquirer");
-var mysql = require("mysql");
+const inquirer = require("inquirer");
+const mysql = require("mysql");
 //create sql connection
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
@@ -44,10 +44,10 @@ function userPrompt() {
       message: "Please enter the item ID of the product you would like to purchase.",
       validate: function (value) {
         if (isNaN(value) === false) {
-            return true;
+          return true;
         }
         return false;
-    }
+      }
     },
     {
       type: "input",
@@ -55,10 +55,10 @@ function userPrompt() {
       message: "How many would you like to buy?",
       validate: function (value) {
         if (isNaN(value) === false) {
-            return true;
+          return true;
         }
         return false;
-    }
+      }
     }
   ]).then(function (custResponse) {
     //Database is queried 
@@ -66,7 +66,7 @@ function userPrompt() {
     FROM products
     WHERE item_id=${custResponse.itemID}`, function (err, res) {
         if (err) throw err;
-         //here we check if there is stock remaining
+        //here we check if there is stock remaining
         if ((custResponse.quantity - res[0].stock_quantity) <= 0) {
           //If stock remains customer data is pushed forward to form the purchase and update the database
           purchase(res[0], custResponse);

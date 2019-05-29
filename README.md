@@ -31,6 +31,3 @@ Finally we have given the manager a series of prompts to add new products:
 And then the added products:
 ![visuals](images/bamazonManagerAddProductPt2.png)
 
-
-
-
